@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>3D Calculator</title>
+  <style>
+    body {
+      background: #dcdcdc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+    }
+
+    .calculator {
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 8px 8px 20px #aaa, -4px -4px 15px #fff;
+      display: grid;
+      grid-template-columns: repeat(4, 70px);
+      grid-template-rows: repeat(6, 70px);
+      gap: 12px;
+    }
+
+    .display {
+      grid-column: span 4;
+      background: #aeb37a;
+      color: #000;
+      font-size: 28px;
+      padding: 12px;
+      text-align: right;
+      border-radius: 10px;
+      border: 3px inset #dcdcdc;
+      box-shadow: inset -4px -4px 8px rgba(255,255,255,0.3),
+                  inset 4px 4px 8px rgba(0,0,0,0.4);
+    }
+
+    button {
+      font-size: 22px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(to bottom, #3b3b3b, #1a1a1a);
+      color: #fff;
+      box-shadow: 2px 2px 5px #000, -2px -2px 5px #555;
+      transition: all 0.1s ease-in-out;
+    }
+
+    button:active {
+      box-shadow: inset 2px 2px 5px #000, inset -2px -2px 5px #555;
+      transform: translateY(2px);
+    }
+
+    .btn-clear {
+      background: linear-gradient(to bottom, #ff5b5b, #c0392b);
+      color: white;
+    }
+
+    .btn-equal {
+      background: linear-gradient(to bottom, #5dade2, #2471a3);
+      color: white;
+      grid-row: span 2;
+    }
+
+    .btn-zero {
+      grid-column: span 2;
+    }
+
+    /* Hover effect for better interaction feel */
+    button:hover {
+      filter: brightness(1.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <input type="text" class="display" id="display" disabled />
+    <button class="btn-clear" onclick="clearDisplay()">C</button>
+    <button onclick="deleteLast()">CE</button>
+    <button onclick="append('/')">/</button>
+    <button onclick="append('*')">*</button>
+
+    <button onclick="append('7')">7</button>
+    <button onclick="append('8')">8</button>
+    <button onclick="append('9')">9</button>
+    <button onclick="append('-')">-</button>
+
+    <button onclick="append('4')">4</button>
+    <button onclick="append('5')">5</button>
+    <button onclick="append('6')">6</button>
+    <button onclick="append('+')">+</button>
+
+    <button onclick="append('1')">1</button>
+    <button onclick="append('2')">2</button>
+    <button onclick="append('3')">3</button>
+    <button class="btn-equal" onclick="calculate()">=</button>
+
+    <button onclick="append('0')">0</button>
+    <button onclick="append('00')">00</button>
+    <button onclick="append('.')">.</button>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+
+    function append(value) {
+      display.value += value;
+    }
+
+    function clearDisplay() {
+      display.value = '';
+    }
+
+    function deleteLast() {
+      display.value = display.value.slice(0, -1);
+    }
+
+    function calculate() {
+      try {
+        display.value = eval(display.value);
+      } catch {
+        display.value = 'Error';
+      }
+    }
+
+    document.addEventListener('keydown', (e) => {
+      const key = e.key;
+
+      if (/[0-9+\-*/.]/.test(key)) {
+        append(key);
+      } else if (key === 'Enter') {
+        e.preventDefault();
+        calculate();
+      } else if (key === 'Backspace') {
+        deleteLast();
+      } else if (key === 'Escape') {
+        clearDisplay();
+      }
+    });
+  </script>
+</body>
+</html>
